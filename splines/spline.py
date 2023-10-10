@@ -1,12 +1,13 @@
 from scipy.stats import qmc
 from scipy.optimize import Bounds
 from sklearn.cluster import DBSCAN
-from geomdl.operations import split_curve
+from geomdl.operations import split_curve, refine_knotvector
 from geomdl.visualization import VisMPL as vis
 import numpy as np
 from geomdl import BSpline, knotvector, NURBS
 from geomdl.fitting import interpolate_curve, approximate_curve
 from copy import copy
+
 
 class Spline:
     def __init__(
@@ -230,3 +231,8 @@ class Spline:
         """Calculate the center of the spline"""
         # TODO: This is not correct for non-arclength parametrized splines
         return np.mean(self.spline.evalpts, axis=0)
+    
+
+    def refine_knotvector(self, factor):
+        """Refine the knotvector of a spline"""
+        refine_knotvector(self.spline, [factor])

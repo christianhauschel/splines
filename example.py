@@ -41,5 +41,6 @@ fig.savefig("doc/img/example.png", dpi=300)
 
 print(crv1.arclength())
 print(crv1.center)
+crv1.refine_knotvector(2)
 
 pplt.show()

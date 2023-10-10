@@ -9,7 +9,7 @@ setup(
         'numpy',
         'scipy',
         "geomdl",
-        "sklearn",
+        "scikit-learn",
         "matplotlib",
     ],
 )
