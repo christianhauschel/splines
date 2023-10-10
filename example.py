@@ -39,4 +39,6 @@ ax.plot(pt_projected[0], pt_projected[1], "o", c="r", label="Projected point")
 ax.legend(ncols=1)
 fig.savefig("doc/img/example.png", dpi=300)
 
+print(crv1.arclength())
+
 pplt.show()

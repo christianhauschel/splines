@@ -204,3 +204,23 @@ class Spline:
         pt_closest = self.evaluate(t_closest)
 
         return pt_closest, t_closest
+
+
+    def evaluate_arclength(self, arc_length):
+        """Evaluate the spline at a given arc length"""
+        pass
+
+    def arclength(self, t0=0, t1=1, n_pts=100):
+        """Calculate the arc length of the spline between t0 and t1"""
+
+        return self._arclength(self.evaluate(np.linspace(t0, t1, n_pts)))
+
+    @staticmethod
+    def _arclength(pts):
+        """Calculate the arc length of a curve defined by pts"""
+
+        arclength = 0.0
+        for i in range(len(pts) - 1):
+            arclength += np.linalg.norm(pts[i + 1, :] - pts[i, :])
+
+        return arclength
