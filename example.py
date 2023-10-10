@@ -40,5 +40,6 @@ ax.legend(ncols=1)
 fig.savefig("doc/img/example.png", dpi=300)
 
 print(crv1.arclength())
+print(crv1.center)
 
 pplt.show()

@@ -224,3 +224,9 @@ class Spline:
             arclength += np.linalg.norm(pts[i + 1, :] - pts[i, :])
 
         return arclength
+    
+    @property
+    def center(self):
+        """Calculate the center of the spline"""
+        # TODO: This is not correct for non-arclength parametrized splines
+        return np.mean(self.spline.evalpts, axis=0)
