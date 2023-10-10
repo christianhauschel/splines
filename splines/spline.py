@@ -8,7 +8,6 @@ from geomdl import BSpline, knotvector, NURBS
 from geomdl.fitting import interpolate_curve, approximate_curve
 from copy import copy
 
-
 class Spline:
     def __init__(
         self,
