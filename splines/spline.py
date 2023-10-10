@@ -4,7 +4,6 @@ from sklearn.cluster import DBSCAN
 from geomdl.operations import split_curve
 from geomdl.visualization import VisMPL as vis
 import numpy as np
-import proplot as pplt
 from geomdl import BSpline, knotvector, NURBS
 from geomdl.fitting import interpolate_curve, approximate_curve
 from copy import copy
@@ -45,6 +44,22 @@ class Spline:
         if spline_type == "nurbs" and weights is not None:
             self.spline.weights = weights.tolist()
 
+    @classmethod
+    def from_spline(cls, spline):
+        """Creates a spline from a geomdl spline.
+        Parameters
+        ----------
+        spline : splipy.Curve
+            Curve
+        Returns
+        -------
+        Spline
+            Spline
+        """
+        result = cls.__new__(cls)
+        result.spline = spline
+        return result
+    
     @staticmethod
     def _spline_geomdl(spline_type, degree, pts, knots):
         result = BSpline.Curve() if spline_type == "bspline" else NURBS.Curve()
@@ -146,8 +161,47 @@ class Spline:
         splipy.Curve
             Splitted curve
         """
-        return split_curve(self.spline, t)
+        list_splines = split_curve(self.spline, t)
+        return [Spline.from_spline(spline) for spline in list_splines]
+
 
     @property
     def bbox(self):
         return self.spline.bbox
+
+
+    def project_point(self, pt, tol_rel=1e-8):
+        """Project a point onto a curve"""
+
+        # Initial guess
+        distance = 1e5
+        n_pts = 100
+        t = np.linspace(0, 1, n_pts)
+        pts = self.evaluate(t)
+        for i in range(n_pts):
+            dist = np.linalg.norm(pt - pts[i, :])
+            if dist < distance:
+                distance = dist
+                id_initial = i
+
+        dist_previous = 100
+        dist_current = 10
+
+        # Repeat until convergence
+        while np.abs(dist_previous - dist_current) / dist_previous > tol_rel:
+            dist_previous = copy(dist_current)
+
+            # split into five intervals
+            t = np.linspace(t[id_initial - 1], t[id_initial + 1], 5)
+            p = self.evaluate(t)
+            dist = np.linalg.norm(p - pt, axis=1)
+
+            # find the minimum
+            id_initial = np.argmin(dist)
+            dist_current = dist[id_initial]
+
+        # print
+        t_closest = t[id_initial]
+        pt_closest = self.evaluate(t_closest)
+
+        return pt_closest, t_closest

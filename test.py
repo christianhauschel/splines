@@ -1,15 +1,5 @@
-from splines import Spline
-import numpy as np
-import proplot as pplt
+from subprocess import run
 
-pts = np.array([[0, 0], [1, 0], [1, 1], [0, 1]])
 
-crv = Spline(pts)
-
-print(crv.evaluate(0.5))
-print(crv.evaluate(np.array([0.5, 0.7])))
-
-fig, ax = pplt.subplots()
-crv.plot(ax)
-
-# pplt.show()
+run("python -m unittest test_splines.py", cwd="tests/")
+run("python -m unittest test_tools.py", cwd="tests/")

@@ -3,15 +3,11 @@ from .spline import Spline
 from scipy.stats import qmc
 from scipy.optimize import Bounds
 from sklearn.cluster import DBSCAN
-from geomdl.operations import split_curve
 from geomdl.visualization import VisMPL as vis
-import splipy
 import numpy as np
-import proplot as pplt
 from scipy.optimize import minimize, root, differential_evolution
 from geomdl import BSpline, knotvector, NURBS
 from geomdl.fitting import interpolate_curve, approximate_curve
-import splipy as sp
 from scipy.optimize import Bounds
 from copy import copy
 
@@ -117,38 +113,3 @@ def cluster_close_points(points, epsilon):
     return np.array(reduced_points)
 
 
-def project_point(crv, pt, tol_rel=1e-8):
-    """Project a point onto a curve"""
-
-    # Initial guess
-    distance = 1e5
-    n_pts = 100
-    t = np.linspace(0, 1, n_pts)
-    pts = crv.evaluate(t)
-    for i in range(n_pts):
-        dist = np.linalg.norm(pt - pts[i, :])
-        if dist < distance:
-            distance = dist
-            id_initial = i
-
-    dist_previous = 100
-    dist_current = 10
-
-    # Repeat until convergence
-    while np.abs(dist_previous - dist_current) / dist_previous > tol_rel:
-        dist_previous = copy(dist_current)
-
-        # split into five intervals
-        t = np.linspace(t[id_initial - 1], t[id_initial + 1], 5)
-        p = crv.evaluate(t)
-        dist = np.linalg.norm(p - pt, axis=1)
-
-        # find the minimum
-        id_initial = np.argmin(dist)
-        dist_current = dist[id_initial]
-
-    # print
-    t_closest = t[id_initial]
-    pt_closest = crv.evaluate(t_closest)
-
-    return pt_closest, t_closest
