@@ -19,8 +19,7 @@ pts2 = np.random.rand(3, 2)
 crv1 = Spline(pts1)
 crv2 = Spline(pts2, spline_type="bspline_inter")
 
-pts3 = np.array([[0, 0], [1, 1]])
-crv3 = Line(pts3)
+crv3 = Line(np.array([0, 0]), np.array([1, 1]))
 
 pts_intersection = intersection(crv1, crv2)
 
