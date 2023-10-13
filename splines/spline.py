@@ -168,6 +168,10 @@ class Spline:
     @property
     def bbox(self):
         return self.spline.bbox
+    
+    @property
+    def start(self):
+        return self.spline.start()
 
 
     def project_point(self, pt, tol_rel=1e-8):
