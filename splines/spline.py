@@ -171,7 +171,11 @@ class Spline:
     
     @property
     def start(self):
-        return self.spline.start()
+        return self.spline.domain[0]
+    
+    @property
+    def end(self):
+        return self.spline.domain[1]
 
 
     def project_point(self, pt, tol_rel=1e-8):
