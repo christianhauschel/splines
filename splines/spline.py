@@ -2,7 +2,7 @@ from scipy.stats import qmc
 from scipy.optimize import Bounds
 from sklearn.cluster import DBSCAN
 from geomdl.operations import split_curve, refine_knotvector
-from geomdl.visualization import VisMPL as vis
+
 import numpy as np
 from geomdl import BSpline, knotvector, NURBS
 from geomdl.fitting import interpolate_curve, approximate_curve
@@ -39,7 +39,7 @@ class Spline:
             self.spline = interpolate_curve(pts.tolist(), degree)
         elif spline_type == "bspline_approx":
             self.spline = approximate_curve(pts.tolist(), degree)
-        self.spline.vis = vis.VisCurve3D() if pts.shape[1] == 3 else vis.VisCurve2D()
+        # self.spline.vis = vis.VisCurve3D() if pts.shape[1] == 3 else vis.VisCurve2D()
 
         if spline_type == "nurbs" and weights is not None:
             self.spline.weights = weights.tolist()
