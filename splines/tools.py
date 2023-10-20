@@ -3,7 +3,7 @@ from .spline import Spline
 from scipy.stats import qmc
 from scipy.optimize import Bounds
 from sklearn.cluster import DBSCAN
-from geomdl.visualization import VisMPL as vis
+# from geomdl.visualization import VisMPL as vis
 import numpy as np
 from scipy.optimize import minimize, root, differential_evolution
 from geomdl import BSpline, knotvector, NURBS
