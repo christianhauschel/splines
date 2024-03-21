@@ -178,11 +178,14 @@ class Spline:
         return self.spline.domain[1]
 
 
-    def project_point(self, pt, tol_rel=1e-8):
-        """Project a point onto a curve"""
+    def project_point(self, pt, tol_rel=1e-8, distance = 1e5):
+        """
+        Project a point onto a curve
+        
+        https://pomax.github.io/bezierinfo/#projections
+        """
 
         # Initial guess
-        distance = 1e5
         n_pts = 100
         t = np.linspace(0, 1, n_pts)
         pts = self.evaluate(t)
@@ -200,7 +203,13 @@ class Spline:
             dist_previous = copy(dist_current)
 
             # split into five intervals
-            t = np.linspace(t[id_initial - 1], t[id_initial + 1], 5)
+            n_t = len(t)
+            if id_initial == 0:
+                t = np.linspace(0, t[id_initial + 1], 5)
+            elif id_initial == n_t - 1:
+                t = np.linspace(t[id_initial - 1], 1, 5)
+            else:
+                t = np.linspace(t[id_initial - 1], t[id_initial + 1], 5)
             p = self.evaluate(t)
             dist = np.linalg.norm(p - pt, axis=1)
 
