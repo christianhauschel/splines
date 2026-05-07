@@ -4,7 +4,10 @@ import numpy as np
 from scipy.spatial import ConvexHull
 from splines import max_distant_pair
 
-
+try:
+    import proplot as pplt
+except ImportError:
+    import matplotlib.pyplot as pplt
 
 for i in range(20):
 
@@ -24,9 +27,8 @@ for i in range(20):
     p1 = points[pts_idx[0]]
     p2 = points[pts_idx[1]]
 
-    import proplot as pplt 
 
-    fig, ax = pplt.subplots(aspect=1, figsize=(4,4))
+    fig, ax = pplt.subplots(figsize=(4,4))
     ax.plot(points[:,0], points[:,1], 'o', color='black', markersize=2)
     ax.plot([p1[0], p2[0]], [p1[1], p2[1]], 'r-')
     fig.show

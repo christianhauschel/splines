@@ -4,6 +4,7 @@ from sklearn.cluster import DBSCAN
 from geomdl.operations import split_curve, refine_knotvector
 
 import numpy as np
+import math
 from geomdl import BSpline, knotvector, NURBS
 from geomdl.fitting import interpolate_curve, approximate_curve
 from copy import copy
@@ -115,12 +116,12 @@ class Spline:
             t = np.clip(t_extra, 0.0, 1.0)
             for i in range(order + 1):
                 tangent = np.array(self.spline.derivatives(u=t, order=d + i)[-1])
-                correction += tangent * (t_extra - t) ** i / np.math.factorial(i)
+                correction += tangent * (t_extra - t) ** i / math.factorial(i)
         else:
             t = np.clip(t_extra, self.spline.start(), self.spline.end())
             for i in range(order + 1):
                 tangent = self.spline.derivative(t, d=i + d)
-                correction += tangent * (t_extra - t) ** i / np.math.factorial(i)
+                correction += tangent * (t_extra - t) ** i / math.factorial(i)
         return correction
 
     def _evaluate_extra(self, t: np.array, order=1, d=0) -> np.array:

@@ -4,8 +4,8 @@ from splines import Spline, intersection, Line
 import numpy as np
 try:
     import proplot as pplt
-except:
-    pass
+except ImportError:
+    import matplotlib.pyplot as pplt
 
 
 # seed numpy
